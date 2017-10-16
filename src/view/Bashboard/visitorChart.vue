@@ -64,7 +64,7 @@
 
         this.chart.setOption({
           title: {
-            text: '本周访客数量',
+            text: '本周成交数量',
             x: 'center'
           },
           xAxis: {

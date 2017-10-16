@@ -131,7 +131,7 @@
       <el-table-column align="center" width="100px" label="市场价" prop="marketPrice" sortable>
       </el-table-column>
 
-      <el-table-column align="center" width="100px" label="成本价" prop="costPrice" sortable>
+      <el-table-column align="center" width="100px" label="会员价" prop="costPrice" sortable>
       </el-table-column>
 
       <el-table-column align="center" width="100px" label="库存" prop="stock" sortable>
@@ -139,10 +139,6 @@
 
       <el-table-column align="center" width="150px" label="新增时间" prop="createTime" sortable>
       </el-table-column>
-
-      <el-table-column align="center" width="150px" label="修改时间" prop="modifyTime" sortable>
-      </el-table-column>
-
       <el-table-column align="center" label="状态" width="100">
         <template scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status ? '已上架' : '待上架'}}</el-tag>

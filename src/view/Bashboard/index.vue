@@ -2,32 +2,29 @@
   <div class="dashboard-editor-container">
     <el-row class="btn-group">
       <el-col :span="4" class='text-center'>
-        <span class="pan-btn light-blue-btn">今日订单：123</span>
+        <span class="pan-btn light-blue-btn">今日订单：{{order}}</span>
       </el-col>
       <el-col :span="4" class='text-center'>
-        <span class="pan-btn pink-btn">今日成交：123</span>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <span class="pan-btn green-btn">今日新增客户：123</span>
+        <span class="pan-btn pink-btn">今日成交: {{knockdown}}</span>
       </el-col>
     </el-row>
-    
+
     <el-row>
       <el-col :span="8">
         <money-chart></money-chart>
       </el-col>
-      
+
       <el-col :span="10">
         <order-chart></order-chart>
       </el-col>
     </el-row>
-    
+
     <el-row :gutter="20">
       <el-col :span="24">
         <visitor-chart></visitor-chart>
       </el-col>
     </el-row>
-  
+
   </div>
 </template>
 
@@ -40,6 +37,9 @@
     components: { moneyChart, visitorChart, orderChart },
     data() {
       return {
+         order:123,
+        knockdown:234
+
       };
     },
     computed: {
