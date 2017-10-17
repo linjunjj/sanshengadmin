@@ -163,16 +163,10 @@
   import {parseTime} from '../../assets/js/tool';
   import keepAliveList from '../keepAliveList';
 
-  const testData = [
-    {orderId: 95601, orderCode: 'DH-O-20170721-095606', timestamp: '2017-07-21 12:45:32', receiver: 'leyi', money: '45.34', status: 1}
-  ];
-
-
+  const testData = [];
   export default {
     components: {},
     name: 'OrderList',
-
-
     data() {
       return {
         tableHeight: 0,
@@ -225,6 +219,7 @@
       $(window).resize(() => {
         this.tableHeight = document.documentElement.clientHeight - (50 + 20 + 50 + 70);
       });
+
       this.getList();
 
 
@@ -249,10 +244,28 @@
       getList() {
         this.listLoading = true;
         setTimeout((items, total) => {
+          this.$http.get('http://',
+            {
+              params:this.$store.state.id,
+            },
+          ).then(function (response) {
+              var errorcode=response.data.errorcode;
+              if(errorcode=="200") {
+                this.testData=response.data;
+              }
+            }
+          ).catch(function (error) {
+            console.log(error);
+
+          }
           this.list = testData.slice(((this.listQuery.page - 1) * this.listQuery.limit), this.listQuery.page * this.listQuery.limit);
+
           this.total = testData.length;
           this.listLoading = false;
         }, 2000);
+      },
+      errormsg(msgerror) {
+        this.$message.error(msgerror);
       },
       handleFilter() {
         this.getList();

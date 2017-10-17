@@ -1,11 +1,11 @@
 <template>
   <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
-    <h3 class="title">系统登录</h3>
+    <h3 class="title">店铺登录</h3>
     <el-form-item prop="account">
-      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+      <el-input type="text" v-model="ruleForm2.username" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="checkPass">
-      <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码"></el-input>
+      <el-input type="password" v-model="ruleForm2.passworld" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
@@ -21,15 +21,15 @@
       return {
         logining: false,
         ruleForm2: {
-          account: '',
-          checkPass: ''
+          username: '',
+          password: ''
         },
         rules2: {
-          account: [
+          username: [
             { required: true, message: '请输入账号', trigger: 'blur' },
             //{ validator: validaePass }
           ],
-          checkPass: [
+          password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
             //{ validator: validaePass2 }
           ]
@@ -45,9 +45,7 @@
         var _this = this;
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
-            //_this.$router.replace('/table');
             this.logining = true;
-            //NProgress.start();
             this.$store.dispatch('LoginByAccount', this.ruleForm2).then(() => {
               this.loading = false;
               this.$router.push({ path: '/' });

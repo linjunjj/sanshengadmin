@@ -1,11 +1,16 @@
 import Cookies from 'js-cookie';
+import store from "../index";
 
 const user = {
   state: {
     token: Cookies.get('Admin-Token'),
+    id:'',
     name: '',
     avatar: '',
-    roles: []
+    roles: [],
+    storeName:'',
+    storeUserId:'',
+    password:'',
   },
 
   mutations: {
@@ -20,17 +25,55 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles;
+    },
+
+    SET_STORENAME: (state,storeName)=> {
+      state.storeName= storeName;
+    },
+    SET_STOREUSERID: (state,storeUserID)=> {
+      state.storeUserId=storeUserID;
+    },
+    SET_PASSWORD: (state,password)=>{
+      state.password=password;
+    },
+    SET_ID: (store,id)=> {
+      store.id=id;
     }
+
+
+
   },
 
   actions: {
-    // 邮箱登录
+    // 手机登录
     LoginByAccount({ commit }, userInfo) {
-      return new Promise((resolve, reject) => {
-        Cookies.set('Admin-Token', '1234567890');
-        commit('SET_TOKEN', '1234567890');
-        resolve();
-      });
+      this.$http.get('http://'
+        , {
+          params: {
+            username: userInfo.username,
+            password: userInfo.password
+          },
+        }
+        ).then(function (response) {
+          var errorcode=response.data.errorcode;
+          if(errorcode=="200"){
+            Cookies.set('Admin-Token', '1234567890');
+            commit('SET_TOKEN', '1234567890');
+            commit('SET_STORENAME',response.data.storeName);
+            commit('SET_STOREUSERID',response.data.storeUserID);
+            commit('SET_PASSWORD',userInfo.password);
+            commit('SET_NAME',userInfo.username);
+            commit('SET_ID',response.data.id);
+            return true;
+          }else if(errorcode=="500"){
+            return false;
+          }
+      })
+      // return new Promise((resolve, reject) => {
+      //   Cookies.set('Admin-Token', '1234567890');
+      //   commit('SET_TOKEN', '1234567890');
+      //   resolve();
+      // });
     },
 
     // 获取用户信息
