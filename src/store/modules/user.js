@@ -39,43 +39,39 @@ const user = {
     SET_ID: (store,id)=> {
       store.id=id;
     }
-
-
-
   },
 
   actions: {
     // 手机登录
     LoginByAccount({ commit }, userInfo) {
-      this.$http.get('http://'
-        , {
-          params: {
-            username: userInfo.username,
+      return new Promise((resolve, reject) => {
+        this.$http.get('http://'
+          ,{
+            params: {
+              username: userInfo.username,
             password: userInfo.password
-          },
-        }
-        ).then(function (response) {
-          var errorcode=response.data.errorcode;
-          if(errorcode=="200"){
-            Cookies.set('Admin-Token', '1234567890');
-            commit('SET_TOKEN', '1234567890');
-            commit('SET_STORENAME',response.data.storeName);
-            commit('SET_STOREUSERID',response.data.storeUserID);
-            commit('SET_PASSWORD',userInfo.password);
-            commit('SET_NAME',userInfo.username);
-            commit('SET_ID',response.data.id);
-            return true;
-          }else if(errorcode=="500"){
-            return false;
-          }
+            },
+      }
+         ).then(function (response) {
+           var errorcode=response.data.errorcode;
+           if(errorcode=="200"){
+             Cookies.set('Admin-Token', '1234567890');
+             commit('SET_TOKEN', '1234567890');
+             commit('SET_STORENAME',response.data.storeName);
+             commit('SET_STOREUSERID',response.data.storeUserID);
+             commit('SET_PASSWORD',userInfo.password);
+             commit('SET_NAME',userInfo.username);
+             commit('SET_ID',response.data.id);
+             localStorage.setItem("STOREID",response.data.id);
+             resolve();
+           }else if(errorcode=="500"){
+             resolve(response.data.errormsg)
+           }
+       }) .catch((error)=> {
+           reject(error);
+        })
       })
-      // return new Promise((resolve, reject) => {
-      //   Cookies.set('Admin-Token', '1234567890');
-      //   commit('SET_TOKEN', '1234567890');
-      //   resolve();
-      // });
-    },
-
+    } ,
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
@@ -107,5 +103,4 @@ const user = {
     }
   }
 };
-
 export default user;

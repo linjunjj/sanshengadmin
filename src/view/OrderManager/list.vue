@@ -246,7 +246,7 @@
         setTimeout((items, total) => {
           this.$http.get('http://',
             {
-              params:this.$store.state.id,
+              params:this.$store.getters.id,
             },
           ).then(function (response) {
               var errorcode=response.data.errorcode;

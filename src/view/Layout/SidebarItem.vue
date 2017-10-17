@@ -22,7 +22,6 @@
     </template>
   </div>
 </template>
-
 <script>
   export default {
     name: 'SidebarItem',
@@ -38,7 +37,7 @@
   .item-icon {
     margin-right: 15px;
   }
-  
+
   .hideSidebar .menu-indent {
     display: block;
     text-indent: 10px;
