@@ -289,7 +289,7 @@
             }
           ).catch(function (error) {
             console.log(error);
-          }
+          });
           this.list = testData.slice(((this.listQuery.page - 1) * this.listQuery.limit), this.listQuery.page * this.listQuery.limit);
           this.total = testData.length;
           this.listLoading = false;
