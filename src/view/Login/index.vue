@@ -5,7 +5,7 @@
       <el-input type="text" v-model="ruleForm2.username" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="checkPass">
-      <el-input type="password" v-model="ruleForm2.passworld" auto-complete="off" placeholder="密码"></el-input>
+      <el-input type="text" v-model="ruleForm2.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
     <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
     <el-form-item style="width:100%;">
@@ -41,19 +41,18 @@
       handleReset2() {
         this.$refs.ruleForm2.resetFields();
       },
-      handleSubmit2(ev) {
-        var _this = this;
+      handleSubmit2() {
         this.$refs.ruleForm2.validate((valid) => {
           if (valid) {
-            this.logining = true;
-            this.$store.dispatch('LoginByAccount', this.ruleForm2).then(() => {
+//            let  ten=this.ruleForm2.password;
+            console.log(this.ruleForm2)
+            this.$store.dispatch('LoginByAccount',this.ruleForm2).then(() => {
               this.loading = false;
               this.$router.push({ path: '/' });
             }).catch(err => {
               this.$message.error(err);
               this.loading = false;
             });
-
           } else {
             console.log('error submit!!');
             return false;

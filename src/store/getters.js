@@ -4,8 +4,8 @@ const getters = {
   sidebar: state => state.app.sidebar,
   visitedViews: state => state.app.visitedViews,
   token: state => state.user.token,
-  avatar: state => state.user.avatar,
-  name: state => state.user.name,
+  avatar: state => state.user.storelogo,
+  name: state => state.user.storeName,
   id: store => {
     if (store.user.id==''){
     return  localStorage.getItem("STOREID");

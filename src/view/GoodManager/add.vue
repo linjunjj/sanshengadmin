@@ -3,22 +3,21 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm" label-width="80px"
              label-position="right">
       <sticky :className="'sub-navbar published'" :zIndex="2">
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm()">保存
+        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm()">新增
         </el-button>
         <el-button type="warning" @click="cancel()">取消</el-button>
       </sticky>
-      
+
       <div class="createPost-main-container">
-        <!--基础信息-->
-        <h3>基础信息</h3>
+        <!--基本信息-->
+        <h3>基本信息</h3>
         <el-row>
           <el-col :span="12">
             <el-form-item label="商品名称" prop="name">
               <el-input v-model="postForm.name" size="small"></el-input>
             </el-form-item>
           </el-col>
-          
-          
+
           <el-col :span="10" :push="1">
             <el-form-item label="商品分类" prop="categoryId">
               <el-cascader
@@ -31,22 +30,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-  
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="计量单位" prop="unitId">
-              <el-select v-model="postForm.unitId" clearable placeholder="请选择" size="small">
-                <el-option
-                  v-for="item in unitList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-  
+
         <el-row>
           <el-col :span="12">
             <el-form-item label="商品标签" prop="tags">
@@ -61,39 +45,34 @@
             </el-form-item>
           </el-col>
         </el-row>
-        
-        <!--商品规格-->
-        <h3>商品规格</h3>
-        <div class="filter-container">
-          <el-button size="small" type="success" icon="plus" @click="addSku">新增</el-button>
-        </div>
+
         <el-table :data="postForm.skus" border fit highlight-current-row style="width: 100%">
-          <el-table-column align="center" min-width="300px" label="规格名称">
+
+          <el-table-column align="center" min-width="200px" label="市场价">
             <template scope="scope">
               <el-input size="small" v-model="scope.row.name"></el-input>
             </template>
           </el-table-column>
-  
-          <el-table-column align="center" width="200px" label="价格">
+
+          <el-table-column align="center" width="200px" label="会员价">
             <template scope="scope">
               <el-input-number :controls="false" size="small" v-model="scope.row.price" :min="1"></el-input-number>
             </template>
           </el-table-column>
-          
+
           <el-table-column align="center" width="300px" label="库存">
             <template scope="scope">
               <el-input-number size="small" v-model="scope.row.stock" :min="1"></el-input-number>
-              <el-checkbox size="small">无限库存</el-checkbox>
             </template>
           </el-table-column>
-    
+
           <el-table-column align="center" label="操作" width="120">
             <template scope="scope">
               <el-button size="small" type="danger" icon="delete">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
-  
+
         <!--商品图片-->
         <h3>商品图片<span style="font-size: 12px;color: darkgrey;">最多20张，默认第一张图片作为主图，可以拖动图片调整</span></h3>
         <el-upload
@@ -106,11 +85,11 @@
           multiple>
           <i class="el-icon-plus"></i>
         </el-upload>
-  
+
         <el-dialog v-model="showImagePreview" size="tiny">
           <img width="100%" :src="previewImageUrl" alt="">
         </el-dialog>
-  
+
         <!--商品详情-->
         <h3>商品详情</h3>
         <div id="editor">
@@ -118,7 +97,7 @@
         </div>
       </div>
     </el-form>
-    
+
     <el-tooltip placement="top" content="回到顶部">
       <back-to-top transitionName="fade" :visibilityHeight="300" :backPosition="50"></back-to-top>
     </el-tooltip>
@@ -131,7 +110,7 @@
   import {CropAndUpload} from '../../components/ImageUpload';
   import sortable from 'html5sortable';
   import wangeditor from 'wangeditor';
-  
+
   export default {
     name: 'AddGood',
     components: {
@@ -147,7 +126,7 @@
           categoryId: undefined,
           unitId: undefined,
           tags: [],
-          skus: []
+          skus: [{name: '', stock: 1, price: 1}]
         },
         rules: {
           name: [
@@ -166,7 +145,7 @@
         loading: false,
         data2: [{
           value: 1,
-          label: '一级 1',
+          label: '主营商城',
           children: [{
             value: 4,
             label: '二级 1-1',
@@ -180,7 +159,7 @@
           }]
         }, {
           value: 2,
-          label: '一级 2',
+          label: '易物商城',
           children: [{
             value: 5,
             label: '二级 2-1'
@@ -190,7 +169,7 @@
           }]
         }, {
           value: 3,
-          label: '一级 3',
+          label: '综合性商城',
           children: [{
             value: 7,
             label: '二级 3-1'
@@ -198,7 +177,18 @@
             value: 8,
             label: '二级 3-2'
           }]
-        }],
+        },
+          {
+            value: 3,
+            label: '村村通',
+            children: [{
+              value: 7,
+              label: '二级 3-1'
+            }, {
+              value: 8,
+              label: '二级 3-2'
+            }]
+          }],
         unitList: [{label: '件', value: 1}, {label: '袋', value: 0}],
         tags: [{id: 1, name: '新品上架'}, {id: 2, name: '热卖促销'}, {id: 3, name: '新客优惠'}],
         checkAllTag: true,
@@ -229,6 +219,8 @@
     filters: {},
     methods: {
       submitForm() {
+
+
         this.$router.go(-1);
       },
       cancel() {
@@ -291,7 +283,7 @@
     top: 10px;
     color: #ff4949;
   }
-  
+
   .createPost-container {
     position: relative;
     .createPost-main-container {
@@ -304,7 +296,7 @@
         margin: 0 8px 8px 0;
         border-radius: 6px;
       }
-      
+
       h3 {
         color: #03b8cc;
         font-size: inherit;

@@ -1,4 +1,4 @@
-<template>
+<template >
   <div class="app-container calendar-list-container">
     <transition name="component-fade" mode="out-in">
       <div class="filter-container" v-if="!selectOrders.length">
@@ -139,9 +139,6 @@
       </el-table-column>
       <el-table-column align="center" width="200px" label="总价" prop="money">
       </el-table-column>
-
-
-
       <el-table-column align="center" label="状态" width="100">
         <template scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status | statusFilterTip}}</el-tag>
@@ -221,12 +218,7 @@
       });
 
       this.getList();
-
-
-
     },
-
-
     filters: {
       parseTime(time) {
         return parseTime(time);
@@ -243,26 +235,28 @@
     methods: {
       getList() {
         this.listLoading = true;
-        setTimeout((items, total) => {
-          this.$http.get('http://',
-            {
-              params:this.$store.getters.id,
-            },
-          ).then(function (response) {
-              var errorcode=response.data.errorcode;
-              if(errorcode=="200") {
-                this.testData=response.data;
-              }
-            }
-          ).catch(function (error) {
-            console.log(error);
-
+        this.$http.get('/api/store/queryOrder',{
+          params: {
+            storeID:this.$store.id,
+            page:this.listQuery.page,
+            pagesize:this.listQuery.limit,
           }
-          this.list = testData.slice(((this.listQuery.page - 1) * this.listQuery.limit), this.listQuery.page * this.listQuery.limit);
+        }).then(function (response) {
+          var code=response.data.errorcode;
+           if (code=="200"){
+             this.total=response.data.total;
+             this.list=response.data.data;
+           }else {
+             this.total=0;
+             this.lis=[];
+           }
+        }).catch((error)=>{
+          console.log(error);
+        })
 
-          this.total = testData.length;
-          this.listLoading = false;
-        }, 2000);
+
+
+
       },
       errormsg(msgerror) {
         this.$message.error(msgerror);
@@ -315,8 +309,7 @@
     }
   };
 </script>
-
-<style>
+<style >
   .order-manage-list.menu-popper-class {
     min-width: 60px !important;
   }

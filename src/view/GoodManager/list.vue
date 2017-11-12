@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <div class="app-container calendar-list-container">
     <div class="filter-container">
       <el-row>
